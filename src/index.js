@@ -32,6 +32,11 @@ server.use(parseJsonBody())
 server.get("/", routes.home)
 
 /**
+ * Measurements - /measurements
+ */
+server.get("/measurements", routes.measurements)
+
+/**
  * Stats - /stats
  */
 server.get("/stats", routes.stats)
