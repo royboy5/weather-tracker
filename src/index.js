@@ -1,12 +1,12 @@
-// import path from 'path';
-import express from 'express';
-import { json as parseJsonBody } from 'body-parser';
-// import requireAll from 'require-all';
+import path from "path"
+import express from "express"
+import { json as parseJsonBody } from "body-parser"
+import requireAll from "require-all"
 
-// const routes = requireAll(path.join(__dirname, 'routes'));
+const routes = requireAll(path.join(__dirname, "routes"))
 
-const server = express();
-export default server;
+const server = express()
+export default server
 
 /*
   TODO: Implement the endpoints in the ATs.
@@ -15,20 +15,21 @@ export default server;
   this file is the root request handler (i.e. `express()`).
 */
 
+/**
+ * Disable x-power-by
+ */
+server.disable("x-powered-by")
+
 // all requests and responses are in JSON
-server.use(parseJsonBody());
+server.use(parseJsonBody())
 
 // dummy handler so you can tell if the server is running
 // e.g. `curl localhost:8000`
-server.get('/', (req, res) => {
-    res.send('home');
-});
-server.get('/stats', (req, res) => {
-    res.status(201).send('ssttaattss');
-});
+server.get("/", routes.home)
+server.get("/stats", routes.stats)
 
 // features/01-measurements/01-add-measurement.feature
-server.post('/measurements', (req, res) => {
+server.post("/measurements", (req, res) => {
   /* Example:
   assert.deepEqual(res.body, {
     timestamp: '2015-09-01T16:00:00.000Z',
@@ -38,8 +39,8 @@ server.post('/measurements', (req, res) => {
   });
   */
 
-  res.status(501);
-});
+  res.status(501)
+})
 
 // // features/01-measurements/02-get-measurement.feature
 // server.get('/measurements/:timestamp', (req, res) => {
@@ -114,8 +115,6 @@ server.post('/measurements', (req, res) => {
 
 //   res.sendStatus(501); // not implemented
 // });
-
-
 
 // // features/02-stats/01-get-stats.feature
 // server.get('/stats', (req, res) => {

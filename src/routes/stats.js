@@ -1,13 +1,13 @@
-'use strict';
+"use strict"
 
-import log from '../utils/logger';
-import express from 'express';
+import log from "../utils/logger"
+import express from "express"
 
-const router = new express.Router();
+const router = new express.Router()
 
-router.get('/', (req, res) => {
-  log.info('Accessed /stats');
-  res.send('stats');
-});
+router.get("/stats", (req, res) => {
+  log.info("Accessed /stats")
+  res.send("stats")
+})
 
-module.exports = router;
+module.exports = router
