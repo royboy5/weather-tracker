@@ -10,4 +10,9 @@ router.get("/measurements", (req, res) => {
   res.status(200).send("measurements")
 })
 
+router.post("/measurements", (req, res) => {
+  log.info("Accessed /measurements")
+  res.status(201).send("measurements")
+})
+
 module.exports = router

@@ -17,15 +17,23 @@ export default server
 
 /**
  * Disable x-power-by
+ * requests and responses are in JSON
  */
 server.disable("x-powered-by")
-
-// all requests and responses are in JSON
 server.use(parseJsonBody())
 
-// dummy handler so you can tell if the server is running
-// e.g. `curl localhost:8000`
+/**
+ * Server routes
+ */
+
+/**
+ * Home - /
+ */
 server.get("/", routes.home)
+
+/**
+ * Stats - /stats
+ */
 server.get("/stats", routes.stats)
 
 // features/01-measurements/01-add-measurement.feature
