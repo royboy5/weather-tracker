@@ -6,7 +6,7 @@ import Measurement from "../models/measurement";
 import { checkTimestamp } from "../utils/helpers";
 
 /**
- * POST metric
+ * POST measurements
  */
 const measurementsPost = (req, res) => {
   log.info("Accessed POST /measurements");
@@ -39,9 +39,9 @@ const measurementsPost = (req, res) => {
 };
 
 /**
- * GET request for metrics
+ * GET request for measurements
  */
-const measurementsItemGet = (req, res) => {
+const measurementsGet = (req, res) => {
   log.info("Accessed GET /measurements");
   log.info(req.params.timestamp, "timestamp");
 
@@ -82,10 +82,23 @@ const measurementsItemGet = (req, res) => {
   }
 };
 
+/**
+ * PUT request for measurements
+ */
 const measurementsPut = (req, res) => {
   log.info("Accessed PUT /measurements");
+  res.status(200).send(req.params);
 };
 
-exports.measurementsItemGet = measurementsItemGet;
+/**
+ * DELETE request for measurements
+ */
+const measurementsDelete = (req, res) => {
+  log.info("Accessed DELETE /measurements");
+  res.status(200).send(req.params);
+};
+
 exports.measurementsPost = measurementsPost;
+exports.measurementsGet = measurementsGet;
 exports.measurementsPut = measurementsPut;
+exports.measurementsDelete = measurementsDelete;
