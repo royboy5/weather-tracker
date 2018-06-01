@@ -1,17 +1,22 @@
-"use strict"
+"use strict";
 
 // import log from '../utils/logger';
-import express from "express"
+import express from "express";
 
-import measurementsController from "../controllers/measurementsController"
+import measurementsController from "../controllers/measurementsController";
 
-const router = new express.Router()
+const router = new express.Router();
 
-router.get("/:timestamp", measurementsController.measurementsItemGet)
+// features/01-measurements/01-add-measurement.feature
+router.post("/", measurementsController.measurementsPost);
 
-router.post("/", measurementsController.measurementsPost)
+// features/01-measurements/02-get-measurement.feature
+router.get("/:timestamp", measurementsController.measurementsItemGet);
 
-// // // features/01-measurements/02-get-measurement.feature
+// features/01-measurements/03-update-measurement.feature
+router.put("/:timestamp", measurementsController.measurementsPut);
+
+// //
 // // server.get('/measurements/:timestamp', (req, res) => {
 // //   /* Example 1:
 // //   assert.equal(req.params.timestamp, '2015-09-01T16:20:00.000Z');
@@ -85,4 +90,4 @@ router.post("/", measurementsController.measurementsPost)
 // //   res.sendStatus(501); // not implemented
 // // });
 
-module.exports = router
+module.exports = router;
