@@ -95,31 +95,35 @@ const measurementsPut = (req, res) => {
     const metrics = new Measurement(req.body);
     log.info("metric created in PUT");
 
-    db.update(
-      { timestamp: req.params.timestamp },
-      metrics,
-      { returnUpdatedDocs: true },
-      (err, numAffected, affectedDocuments, upsert) => {
-        if (err) {
-          log.error(err);
-          res.status(400).send({ status: "error", message: err });
-        } else if (!numAffected) {
-          log.error("Query is null");
-          res.status(404).send({ status: "error", message: "Query is null" });
-        } else if (req.params.timestamp !== affectedDocuments.timestamp) {
-          log.error("Cannot update timestamp");
-          res
-            .status(409)
-            .send({ status: "error", message: "Cannot update timestamp" });
-        } else {
-          log.info("Row inserted");
-          res.status(204).send({
-            status: "success",
-            message: affectedDocuments
-          });
-        }
+    db.findOne({ timestamp: req.params.timestamp }, (err, doc) => {
+      log.info(doc);
+
+      if (err) {
+        res.status(404).send({ status: "err", message: err });
+      } else if (!doc) {
+        res.status(404).send({ status: "err", message: "Query is null" });
+      } else if (metrics.timestamp !== doc.timestamp) {
+        res.status(409).send(doc);
+      } else {
+        db.update(
+          { timestamp: req.params.timestamp },
+          metrics,
+          { returnUpdatedDocs: true },
+          (err, numAffected, affectedDocuments, upsert) => {
+            if (err) {
+              log.error(err);
+              res.status(400).send({ status: "error", message: err });
+            } else {
+              log.info("Row inserted");
+              res.status(204).send({
+                status: "success",
+                message: affectedDocuments
+              });
+            }
+          }
+        );
       }
-    );
+    });
   } catch (e) {
     log.info(e.message);
     res.status(400).send({
