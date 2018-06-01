@@ -3,7 +3,7 @@
 import log from "../utils/logger";
 import db from "../utils/database";
 import Measurement from "../models/measurement";
-import { checkTimestamp } from "../utils/helpers";
+import { checkTimestamp, filterKeys } from "../utils/helpers";
 
 /**
  * POST measurements
@@ -59,22 +59,29 @@ const measurementsGet = (req, res) => {
       } else if (!doc) {
         res.status(404).send({ status: "err", message: "Query is null" });
       } else {
-        log.info(doc);
-        res.status(200).send(doc);
+        const filteredObj = filterKeys(doc, null, ["_id"]);
+
+        log.info(filteredObj);
+        res.status(200).send(filteredObj);
       }
     });
   } else {
-    db.find({ timestamp: new RegExp(req.params.timestamp) }, (err, docs) => {
-      log.info(docs);
-      if (err) {
-        log.error(err);
-        res.status(404).send({ status: "err", message: err });
-      } else if (!docs.length) {
-        res.status(404).send({ status: "err", message: "Query is null" });
-      } else {
-        res.status(200).send(docs);
-      }
-    });
+    db
+      .find({ timestamp: new RegExp(req.params.timestamp) })
+      .sort({ timestamp: 1 })
+      .exec((err, docs) => {
+        log.info(docs);
+        if (err) {
+          log.error(err);
+          res.status(404).send({ status: "err", message: err });
+        } else if (!docs.length) {
+          res.status(404).send({ status: "err", message: "Query is null" });
+        } else {
+          const filteredArr = docs.map(item => filterKeys(item, null, ["_id"]));
+          log.info(filteredArr);
+          res.status(200).send(filteredArr);
+        }
+      });
   }
 };
 
@@ -93,7 +100,6 @@ const measurementsPut = (req, res) => {
       metrics,
       { returnUpdatedDocs: true },
       (err, numAffected, affectedDocuments, upsert) => {
-        log.info(affectedDocuments);
         if (err) {
           log.error(err);
           res.status(400).send({ status: "error", message: err });
