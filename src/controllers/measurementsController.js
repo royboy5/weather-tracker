@@ -1,18 +1,34 @@
 "use strict"
+
 import log from "../utils/logger"
 import db from "../utils/database"
-import measurement from "../models/measurement"
+import Measurement from "../models/measurement"
 
-const measurements_list_get = (req, res) => {
+const measurementsListGet = (req, res) => {
   log.info("Accessed GET /measurements")
   res.status(200).send("measurements")
 }
 
-const measurements_post = (req, res) => {
+const measurementsPost = (req, res) => {
   log.info("Accessed POST /measurements")
-  log.info(req.body)
-  res.status(201).send(req.body)
+
+  try {
+    let metrics = new Measurement(req.body)
+    log.info("metric created")
+
+    db.insert(req.body, (err, newDoc) => {
+      if (err) {
+        log.error(err)
+        res.status(400)
+      }
+      log.info("Row inserted")
+      res.status(201).send(newDoc)
+    })
+  } catch (e) {
+    log.info(e)
+    res.status(400).send(e)
+  }
 }
 
-exports.measurements_list_get = measurements_list_get
-exports.measurements_post = measurements_post
+exports.measurementsListGet = measurementsListGet
+exports.measurementsPost = measurementsPost

@@ -1,15 +1,15 @@
 "use strict"
 
-import log from "../utils/logger"
+// import log from '../utils/logger';
 import express from "express"
 
-import measurements_controller from "../controllers/measurementsController"
+import measurementsController from "../controllers/measurementsController"
 
 const router = new express.Router()
 
-router.get("/", measurements_controller.measurements_list_get)
+router.get("/", measurementsController.measurementsListGet)
 
-router.post("/", measurements_controller.measurements_post)
+router.post("/", measurementsController.measurementsPost)
 
 // features/01-measurements/01-add-measurement.feature
 // server.post("/measurements", (req, res) => {
