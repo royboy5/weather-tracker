@@ -14,6 +14,10 @@ export default class Measurement {
 
     if (rest) {
       Object.keys(rest).forEach(metric => {
+        if (typeof rest[metric] !== "number") {
+          throw new Error(`Param values must be an number`)
+        }
+
         this[metric] = rest[metric]
       })
     }

@@ -13,20 +13,23 @@ const measurementsPost = (req, res) => {
   log.info("Accessed POST /measurements")
 
   try {
-    let metrics = new Measurement(req.body)
+    const metrics = new Measurement(req.body)
     log.info("metric created")
 
-    db.insert(req.body, (err, newDoc) => {
+    db.insert(metrics, (err, newDoc) => {
       if (err) {
         log.error(err)
         res.status(400)
       }
       log.info("Row inserted")
-      res.status(201).send(newDoc)
+      res
+        .status(201)
+        .location(`/measurements/${metrics.timestamp}`)
+        .send(newDoc)
     })
   } catch (e) {
-    log.info(e)
-    res.status(400).send(e)
+    log.info(e.message)
+    res.status(400).send(e.message)
   }
 }
 
