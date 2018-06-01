@@ -7,23 +7,9 @@ import measurementsController from "../controllers/measurementsController"
 
 const router = new express.Router()
 
-router.get("/", measurementsController.measurementsListGet)
+router.get("/:timestamp", measurementsController.measurementsItemGet)
 
 router.post("/", measurementsController.measurementsPost)
-
-// features/01-measurements/01-add-measurement.feature
-// server.post("/measurements", (req, res) => {
-//   /* Example:
-//   assert.deepEqual(res.body, {
-//     timestamp: '2015-09-01T16:00:00.000Z',
-//     temperature: 27.1,
-//     dewPoint: 16.7,
-//     precipitation: 0
-//   });
-//   */
-
-//   res.status(501)
-// })
 
 // // // features/01-measurements/02-get-measurement.feature
 // // server.get('/measurements/:timestamp', (req, res) => {

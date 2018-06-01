@@ -4,8 +4,9 @@ import log from "../utils/logger"
 import db from "../utils/database"
 import Measurement from "../models/measurement"
 
-const measurementsListGet = (req, res) => {
+const measurementsItemGet = (req, res) => {
   log.info("Accessed GET /measurements")
+  log.info(req.params.timestamp)
   res.status(200).send("measurements")
 }
 
@@ -33,5 +34,5 @@ const measurementsPost = (req, res) => {
   }
 }
 
-exports.measurementsListGet = measurementsListGet
+exports.measurementsItemGet = measurementsItemGet
 exports.measurementsPost = measurementsPost
