@@ -56,25 +56,20 @@ const measurementsGet = (req, res) => {
       if (err) {
         log.error(err);
         res.status(404).send({ status: "err", message: err });
-      }
-
-      if (!doc) {
+      } else if (!doc) {
         res.status(404).send({ status: "err", message: "Query is null" });
+      } else {
+        log.info(doc);
+        res.status(200).send(doc);
       }
-
-      log.info(doc);
-      res.status(200).send(doc);
     });
   } else {
     db.find({ timestamp: new RegExp(req.params.timestamp) }, (err, docs) => {
+      log.info(docs);
       if (err) {
         log.error(err);
         res.status(404).send({ status: "err", message: err });
-      }
-
-      log.info(docs);
-
-      if (!docs.length) {
+      } else if (!docs.length) {
         res.status(404).send({ status: "err", message: "Query is null" });
       } else {
         res.status(200).send(docs);
@@ -96,16 +91,16 @@ const measurementsPut = (req, res) => {
     db.update(
       { timestamp: req.params.timestamp },
       metrics,
-      {},
-      (err, newDoc) => {
-        log.info(newDoc);
+      { returnUpdatedDocs: true },
+      (err, numAffected, affectedDocuments, upsert) => {
+        log.info(affectedDocuments);
         if (err) {
           log.error(err);
           res.status(400).send({ status: "error", message: err });
-        } else if (!newDoc) {
+        } else if (!numAffected) {
           log.error("Query is null");
           res.status(404).send({ status: "error", message: "Query is null" });
-        } else if (req.params.timestamp !== newDoc.timestamp) {
+        } else if (req.params.timestamp !== affectedDocuments.timestamp) {
           log.error("Cannot update timestamp");
           res
             .status(409)
@@ -114,7 +109,7 @@ const measurementsPut = (req, res) => {
           log.info("Row inserted");
           res.status(204).send({
             status: "success",
-            message: newDoc
+            message: affectedDocuments
           });
         }
       }
