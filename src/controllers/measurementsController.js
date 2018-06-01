@@ -13,21 +13,22 @@ const measurementsPost = (req, res) => {
 
   try {
     const metrics = new Measurement(req.body);
-    log.info("metric created");
+    log.info("metric created in POST");
 
     db.insert(metrics, (err, newDoc) => {
       if (err) {
         log.error(err);
         res.status(400).send({ status: "error", message: err });
+      } else {
+        log.info("Row inserted");
+        res
+          .status(201)
+          .location(`/measurements/${metrics.timestamp}`)
+          .send({
+            status: "success",
+            message: newDoc
+          });
       }
-      log.info("Row inserted");
-      res
-        .status(201)
-        .location(`/measurements/${metrics.timestamp}`)
-        .send({
-          status: "success",
-          message: newDoc
-        });
     });
   } catch (e) {
     log.info(e.message);
@@ -87,7 +88,44 @@ const measurementsGet = (req, res) => {
  */
 const measurementsPut = (req, res) => {
   log.info("Accessed PUT /measurements");
-  res.status(200).send(req.params);
+
+  try {
+    const metrics = new Measurement(req.body);
+    log.info("metric created in PUT");
+
+    db.update(
+      { timestamp: req.params.timestamp },
+      metrics,
+      {},
+      (err, newDoc) => {
+        log.info(newDoc);
+        if (err) {
+          log.error(err);
+          res.status(400).send({ status: "error", message: err });
+        } else if (!newDoc) {
+          log.error("Query is null");
+          res.status(404).send({ status: "error", message: "Query is null" });
+        } else if (req.params.timestamp !== newDoc.timestamp) {
+          log.error("Cannot update timestamp");
+          res
+            .status(409)
+            .send({ status: "error", message: "Cannot update timestamp" });
+        } else {
+          log.info("Row inserted");
+          res.status(204).send({
+            status: "success",
+            message: newDoc
+          });
+        }
+      }
+    );
+  } catch (e) {
+    log.info(e.message);
+    res.status(400).send({
+      status: "error",
+      message: e.message
+    });
+  }
 };
 
 /**
