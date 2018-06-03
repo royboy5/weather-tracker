@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-  logging: {
-    level: 'debug',
-    query: true
-  }
+    logging: {
+        level: 'debug',
+        query: true
+    }
 };

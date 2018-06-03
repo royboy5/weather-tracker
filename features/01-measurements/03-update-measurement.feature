@@ -18,7 +18,7 @@ Feature: Update a measurement
     And the measurement for "2015-09-01T16:00:00.000Z" is:
       | timestamp                  | temperature | dewPoint | precipitation |
       | "2015-09-01T16:00:00.000Z" | 27.1        | 16.7     | 15.2          |
-      
+
   Scenario: Replace a measurement with invalid values
     # PUT /measurements/2015-09-01T16:00:00.000Z
     When I replace the measurement for "2015-09-01T16:00:00.000Z" as follows:
@@ -45,7 +45,7 @@ Feature: Update a measurement
       | timestamp                  | temperature | dewPoint | precipitation |
       | "2015-09-02T16:00:00.000Z" | 27.1        | 16.7     | 15.2          |
     Then the response has a status code of 404
-  @skip
+
   Scenario: Update metrics of a measurement with valid (numeric) values
     # PATCH /measurements/2015-09-01T16:00:00.000Z
     When I update the measurement for "2015-09-01T16:00:00.000Z" as follows:
@@ -55,7 +55,7 @@ Feature: Update a measurement
     And the measurement for "2015-09-01T16:00:00.000Z" is:
       | timestamp                  | temperature | dewPoint | precipitation |
       | "2015-09-01T16:00:00.000Z" | 27.1        | 16.7     | 12.3          |
-  @skip
+
   Scenario: Update metrics of a measurement with invalid values
     # PATCH /measurements/2015-09-01T16:00:00.000Z
     When I update the measurement for "2015-09-01T16:00:00.000Z" as follows:
@@ -66,7 +66,6 @@ Feature: Update a measurement
       | timestamp                  | temperature | dewPoint | precipitation |
       | "2015-09-01T16:00:00.000Z" | 27.1        | 16.7     | 0             |
 
-  @skip
   Scenario: Update metrics of a measurement with mismatched timestamps
     # PATCH /measurements/2015-09-01T16:00:00.000Z
     When I update the measurement for "2015-09-01T16:00:00.000Z" as follows:
@@ -77,7 +76,6 @@ Feature: Update a measurement
       | timestamp                  | temperature | dewPoint | precipitation |
       | "2015-09-01T16:00:00.000Z" | 27.1        | 16.7     | 0             |
   
-  @skip
   Scenario: Update metrics of a measurement that does not exist
     # PATCH /measurements/2015-09-02T16:00:00.000Z
     When I update the measurement for "2015-09-02T16:00:00.000Z" as follows:

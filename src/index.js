@@ -1,11 +1,11 @@
-import path from "path"
-import express from "express"
-import { json as parseJsonBody } from "body-parser"
-import requireAll from "require-all"
+import path from 'path';
+import express from 'express';
+import { json as parseJsonBody } from 'body-parser';
+import requireAll from 'require-all';
 
-const routes = requireAll(path.join(__dirname, "routes"))
+const routes = requireAll(path.join(__dirname, 'routes'));
 
-const server = express()
+const server = express();
 
 /*
   TODO: Implement the endpoints in the ATs.
@@ -18,8 +18,8 @@ const server = express()
  * Disable x-power-by
  * requests and responses are in JSON
  */
-server.disable("x-powered-by")
-server.use(parseJsonBody())
+server.disable('x-powered-by');
+server.use(parseJsonBody());
 
 /**
  * Server routes
@@ -28,16 +28,16 @@ server.use(parseJsonBody())
 /**
  * Home - /
  */
-server.use("/", routes.home)
+server.use('/', routes.home);
 
 /**
  * Measurements - /measurements
  */
-server.use("/measurements", routes.measurements)
+server.use('/measurements', routes.measurements);
 
 /**
  * Stats - /stats
  */
-server.use("/stats", routes.stats)
+server.use('/stats', routes.stats);
 
-export default server
+export default server;
